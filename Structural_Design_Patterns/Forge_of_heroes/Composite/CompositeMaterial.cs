@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Structural_Design_Patterns.Forge_of_heroes.Bridge;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Structural_Design_Patterns.Forge_of_heroes.Composite
 {
-    class CompositeMaterial : MaterialComponent
+    class CompositeMaterial : MaterialComponent, IMaterialComponent
     {
         public List<MaterialComponent> children = new List<MaterialComponent>();
 

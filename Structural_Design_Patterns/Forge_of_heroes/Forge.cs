@@ -1,10 +1,7 @@
 ﻿using Structural_Design_Patterns.Forge_of_heroes.Adapter;
+using Structural_Design_Patterns.Forge_of_heroes.Bridge;
 using Structural_Design_Patterns.Forge_of_heroes.Composite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Structural_Design_Patterns.Forge_of_heroes.Decorator;
 
 namespace Structural_Design_Patterns.Forge_of_heroes
 {
@@ -12,58 +9,70 @@ namespace Structural_Design_Patterns.Forge_of_heroes
     {
         private List<Sword> inventory;
         private IWeightAdapter weightAdapter;
+        private IMaterialComponent materialComponent;
 
-        public Forge() {
+        public Forge(IMaterialComponent materialComponent) {
             inventory = new List<Sword>();
             weightAdapter = new WeightAdapter();
+            this.materialComponent = materialComponent;
         }
-        public void Craft(string nameSword, List<MaterialComponent> MetalMaterials = null, List<MaterialComponent> WoodMaterials = null, List<MaterialComponent> GemstoneMaterials = null)
+        public void Craft(string nameSword, List<MaterialComponent>? MetalMaterials = null, List<MaterialComponent>? WoodMaterials = null, List<MaterialComponent>? GemstoneMaterials = null)
         {
-            CompositeMaterial material = new CompositeMaterial("Materials", 0);
+            materialComponent = new CompositeMaterial("Materials", 0);
 
             if (MetalMaterials != null)
             {
-                CompositeMaterial metals = new CompositeMaterial("Metals", 0);
+                IMaterialComponent metals = new CompositeMaterial("Metals", 0);
                 foreach (MaterialComponent materials in MetalMaterials)
                 {
                     metals.Add(materials);
                 }
-                material.Add(metals);
+                materialComponent.Add((MaterialComponent)metals);
             }
 
             if (WoodMaterials != null)
             {
-                CompositeMaterial woods = new CompositeMaterial("Woods", 0);
+                IMaterialComponent woods = new CompositeMaterial("Woods", 0);
                 foreach (MaterialComponent materials in WoodMaterials)
                 {
                     woods.Add(materials);
                 }
-                material.Add(woods);
+                materialComponent.Add((MaterialComponent)woods);
             }
 
             if (GemstoneMaterials != null)
             {
-                CompositeMaterial gemstones = new CompositeMaterial("Gemstones", 0);
+                IMaterialComponent gemstones = new CompositeMaterial("Gemstones", 0);
                 foreach (MaterialComponent materials in GemstoneMaterials)
                 {
                     gemstones.Add(materials);
                 }
-                material.Add(gemstones);
+                materialComponent.Add((MaterialComponent)gemstones);
             }
 
 
             Console.WriteLine($"{nameSword} successfully created!");
             Console.WriteLine("Used: ");
-            material.Display(0);
+            materialComponent.Display(0);
 
-            double totalWeight = material.GetTotalWeight();
+            double totalWeight = materialComponent.GetTotalWeight();
             double kilogramsWeight = weightAdapter.ConvertGramsToKilograms(totalWeight);
             Console.WriteLine("Total weight of materials: " + kilogramsWeight + " kg\n");
 
             inventory.Add(new Sword(nameSword, kilogramsWeight, 10));
         }
-        public void Modify() {
-            // Логіка для модифікації предмету
+        public void Modify(string swordName, int attackBonus, string featureName) {
+            foreach (var sword in inventory)
+            {
+                if (sword.Name == swordName)
+                {
+                    ISwordDecorator decoratedSword = new SwordDecorator(sword);
+                    int totalAttack = decoratedSword.AddFeature(attackBonus, featureName);
+                    sword.Attack = totalAttack;
+                    Console.WriteLine($"Modified sword {swordName} successfully!");
+                }
+            }
+            Console.WriteLine($"Sword {swordName} not found!");
         }
         public void DisplayInventory() {
             Console.WriteLine("\nInventory:");
