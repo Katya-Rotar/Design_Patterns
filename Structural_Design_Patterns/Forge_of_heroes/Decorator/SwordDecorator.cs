@@ -22,9 +22,5 @@ namespace Structural_Design_Patterns.Forge_of_heroes.Decorator
             Console.WriteLine($"Added feature: {featureName}. Increased attack by {attackBonus}");
             return Attack;
         }
-        public override string ToString()
-        {
-            return base.ToString() + $"\nSpecial Feature: {featureName}";
-        }
     }
 }

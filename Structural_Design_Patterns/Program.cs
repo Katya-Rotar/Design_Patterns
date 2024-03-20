@@ -2,18 +2,23 @@
 using Structural_Design_Patterns.Forge_of_heroes.Bridge;
 using Structural_Design_Patterns.Forge_of_heroes.Composite;
 using Structural_Design_Patterns.Forge_of_heroes.Facade;
+using Structural_Design_Patterns.Forge_of_heroes.Flyweight;
+using Structural_Design_Patterns.Forge_of_heroes.Proxy;
 
 public class Program
 {
     public static void Main(string[] args)
     {
         IMaterialComponent materialComponent = new CompositeMaterial("Materials", 0);
-        ForgeFacade facade = new ForgeFacade(materialComponent);
+        MaterialFactory materialFactory = new MaterialFactory();
+        ForgeFacade facade = new ForgeFacade(materialComponent, materialFactory);
         Console.WriteLine("Creating a sword \n----------------------------------------\n");
+
+        // Створення мечів за допомогою патерна Builder
         string nameSword_1 = "Dragonbane";
         List<MaterialComponent> MetalMaterialsDragonbane = new List<MaterialComponent>();
-        MetalMaterialsDragonbane.Add(new Metal("Iron", 500));
-        MetalMaterialsDragonbane.Add(new Metal("Steel", 150));
+        MetalMaterialsDragonbane.Add(new Metal("Iron", 150));
+        MetalMaterialsDragonbane.Add(new Metal("Steel", 400));
         List<MaterialComponent> WoodMaterialsDragonbane = new List<MaterialComponent>();
         WoodMaterialsDragonbane.Add(new Wood("Oak", 200));
         List<MaterialComponent> GemstoneMaterialsDragonbane = new List<MaterialComponent>();
@@ -28,12 +33,21 @@ public class Program
         facade.CreateItem(nameSword_2, MetalMaterialsBladeOfKings, null, GemstoneMaterialsBladeOfKings);
         facade.ShowInventory();
 
-        //
-        facade.ModifyItem("Dragonbane", 8, "Flaming Sword");//Палаючий меч
-        facade.ModifyItem("Dragonbane", 28, "Energy Burst");//Вибух енергії
+        // Створення проксі-об'єктів для керування доступом до функціоналу ковальні за допомогою патерна Proxy
+        bool userHasPermission;
+        userHasPermission = true;
 
-        facade.ModifyItem("Blade of Kings", 15, "Sharper Angles"); //Гострі кути
-        facade.ModifyItem("Blade of Kings", 30, "Explosive Wave"); //Вибухова хвиля
+        //Decorator
+        ForgeProxy forgeProxy_true = new ForgeProxy(facade, userHasPermission);
+        forgeProxy_true.ModifyItem("Dragonbane", 8, "Flaming Sword");//Палаючий меч
+        forgeProxy_true.ModifyItem("Dragonbane", 28, "Energy Burst");//Вибух енергії
+
+        userHasPermission = false;
+        ForgeProxy forgeProxy_false = new ForgeProxy(facade, userHasPermission);
+        forgeProxy_false.ModifyItem("Blade of Kings", 15, "Sharper Angles"); //Гострі кути
+        forgeProxy_false.ModifyItem("Blade of Kings", 30, "Explosive Wave"); //Вибухова хвиля
+
+        // Виведення інвентаря за допомогою патерна Facade
         facade.ShowInventory();
     }
 }
