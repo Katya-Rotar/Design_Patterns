@@ -14,20 +14,26 @@ namespace Structural_Design_Patterns.Forge_of_heroes.Flyweight
 
         private Dictionary<string, MaterialComponent> material = new Dictionary<string, MaterialComponent>();
 
-        public MaterialComponent GetMaterial(string key, double weight) {
-            if(!material.ContainsKey(key)) {
+        public MaterialComponent GetMaterial(string key, double weight)
+        {
+            if (!material.ContainsKey(key))
+            {
                 // створення нового матеріалу лише в разі його відсутності
-                switch(key)
+                switch (key)
                 {
                     case "Iron":
                     case "Steel":
+                    case "Silver":
+                    case "Obsidian":
                         material[key] = new Metal(key, weight);
                         break;
                     case "Oak":
+                    case "Ebony":
                         material[key] = new Wood(key, weight);
                         break;
                     case "Ruby":
                     case "Diamond":
+                    case "Amethyst":
                         material[key] = new Gemstone(key, weight);
                         break;
                 }

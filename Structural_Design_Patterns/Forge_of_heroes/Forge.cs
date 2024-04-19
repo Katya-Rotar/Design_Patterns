@@ -6,7 +6,7 @@ using Structural_Design_Patterns.Forge_of_heroes.Flyweight;
 
 namespace Structural_Design_Patterns.Forge_of_heroes
 {
-    public class Forge
+    public class Forge : IForge
     {
         private List<Sword> inventory;
         private IWeightAdapter weightAdapter;
@@ -19,61 +19,51 @@ namespace Structural_Design_Patterns.Forge_of_heroes
             this.materialComponent = materialComponent;
             this.materialFactory = materialFactory;
         }
-        public void Craft(string nameSword, List<MaterialComponent>? MetalMaterials = null, List<MaterialComponent>? WoodMaterials = null, List<MaterialComponent>? GemstoneMaterials = null)
+
+        public Forge()
+        {
+        }
+
+        public void PrepareMaterials(List<MaterialComponent>? MetalMaterials, List<MaterialComponent>? WoodMaterials, List<MaterialComponent>? GemstoneMaterials)
         {
             materialComponent = new CompositeMaterial("Materials", 0);
 
-            if (MetalMaterials != null)
+            AddMaterialsToComponent(MetalMaterials, "Metals");
+            AddMaterialsToComponent(WoodMaterials, "Woods");
+            AddMaterialsToComponent(GemstoneMaterials, "Gemstones");
+        }
+
+        private void AddMaterialsToComponent(List<MaterialComponent>? materials, string componentName)
+        {
+            if (materials != null)
             {
-                IMaterialComponent metals = new CompositeMaterial("Metals", 0);
-                foreach (MaterialComponent materials in MetalMaterials)
+                IMaterialComponent component = new CompositeMaterial(componentName, 0);
+                foreach (MaterialComponent material in materials)
                 {
-                    //Flyweight
-                    // для кожного матеріалу у списку MetalMaterials використовується фабрика, щоб отримати відповідний екземпляр матеріалу за його назвою
-                    var material = materialFactory.GetMaterial(materials.name, materials.weight);
-                    metals.Add(material);
+                    var materialInstance = materialFactory.GetMaterial(material.name, material.weight);
+                    component.Add(materialInstance);
                 }
-                materialComponent.Add((MaterialComponent)metals);
+                materialComponent.Add((MaterialComponent)component);
             }
+        }
 
-            if (WoodMaterials != null)
-            {
-                IMaterialComponent woods = new CompositeMaterial("Woods", 0);
-                foreach (MaterialComponent materials in WoodMaterials)
-                {
-                    //Flyweight
-                    var material = materialFactory.GetMaterial(materials.name, materials.weight);
-                    woods.Add(material);
-                }
-                materialComponent.Add((MaterialComponent)woods);
-            }
-
-            if (GemstoneMaterials != null)
-            {
-                IMaterialComponent gemstones = new CompositeMaterial("Gemstones", 0);
-                foreach (MaterialComponent materials in GemstoneMaterials)
-                {
-                    //Flyweight
-                    var material = materialFactory.GetMaterial(materials.name, materials.weight);
-                    gemstones.Add(material);
-                }
-                materialComponent.Add((MaterialComponent)gemstones);
-            }
-
-
+        public void Craft(string nameSword, double kilogramsWeight)
+        {
             Console.WriteLine($"{nameSword} successfully created!");
             Console.WriteLine("Used: ");
             materialComponent.Display(0);
+            inventory.Add(new Sword(nameSword, kilogramsWeight, 10));
+        }
 
+        public double totalWeight() {
             double totalWeight = materialComponent.GetTotalWeight();
             double kilogramsWeight = weightAdapter.ConvertGramsToKilograms(totalWeight);
             Console.WriteLine("Total weight of materials: " + kilogramsWeight + " kg\n");
-
-            inventory.Add(new Sword(nameSword, kilogramsWeight, 10));
+            return kilogramsWeight;
         }
+
         public void Modify(string swordName, int attackBonus, string featureName)
         {
-            
             bool found = false;
             foreach (var sword in inventory)
             {
@@ -101,6 +91,36 @@ namespace Structural_Design_Patterns.Forge_of_heroes
                 Console.WriteLine("----------------------------");
                 id++;
             }
+        }
+
+        public void HeatMetal()
+        {
+            Console.WriteLine("Heating the metal...");
+        }
+
+        public void BeatMetal()
+        {
+            Console.WriteLine("Beating the metal...");
+        }
+
+        public void BendMetal()
+        {
+            Console.WriteLine("Bending the metal...");
+        }
+
+        public void ShapeMetal()
+        {
+            Console.WriteLine("Shaping the metal...");
+        }
+
+        public void PreparePattern()
+        {
+            Console.WriteLine("Preparing the pattern...");
+        }
+
+        public void ApplyPattern()
+        {
+            Console.WriteLine("Applying the pattern...");
         }
     }
 }

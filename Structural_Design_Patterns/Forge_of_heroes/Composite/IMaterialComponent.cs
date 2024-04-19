@@ -1,11 +1,10 @@
-﻿using Structural_Design_Patterns.Forge_of_heroes.Composite;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Structural_Design_Patterns.Forge_of_heroes.Bridge
+namespace Structural_Design_Patterns.Forge_of_heroes.Composite
 {
     public interface IMaterialComponent
     {

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Creational_Design_Patterns", "Creational_Design_Patterns\Creational_Design_Patterns.csproj", "{9201F4FB-D182-4ADD-9692-D848FD93D21B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Creational_Design_Patterns", "Creational_Design_Patterns\Creational_Design_Patterns.csproj", "{9201F4FB-D182-4ADD-9692-D848FD93D21B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structural_Design_Patterns", "Structural_Design_Patterns\Structural_Design_Patterns.csproj", "{E4112253-F2A8-48F3-81B0-3D79D7FBE5E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Structural_Design_Patterns", "Structural_Design_Patterns\Structural_Design_Patterns.csproj", "{E4112253-F2A8-48F3-81B0-3D79D7FBE5E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral_Design_Patterns", "Behavioral_Design_Patterns\Behavioral_Design_Patterns.csproj", "{113D44B9-1217-470F-8933-380EACC37C75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{E4112253-F2A8-48F3-81B0-3D79D7FBE5E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4112253-F2A8-48F3-81B0-3D79D7FBE5E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4112253-F2A8-48F3-81B0-3D79D7FBE5E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{113D44B9-1217-470F-8933-380EACC37C75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{113D44B9-1217-470F-8933-380EACC37C75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{113D44B9-1217-470F-8933-380EACC37C75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{113D44B9-1217-470F-8933-380EACC37C75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,4 @@
-﻿using Structural_Design_Patterns.Forge_of_heroes.Bridge;
-using Structural_Design_Patterns.Forge_of_heroes.Composite;
+﻿using Structural_Design_Patterns.Forge_of_heroes.Composite;
 using Structural_Design_Patterns.Forge_of_heroes.Flyweight;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,9 @@ namespace Structural_Design_Patterns.Forge_of_heroes.Facade
         }
         public void CreateItem(string nameSword, List<MaterialComponent> metal, List<MaterialComponent> wood, List<MaterialComponent> gemstone)
         {
-            forge.Craft(nameSword, metal, wood, gemstone);
+            forge.PrepareMaterials(metal, wood, gemstone);
+            double weightSword = forge.totalWeight();
+            forge.Craft(nameSword, weightSword);
         }
         public void ModifyItem(string swordName, int attackBonus, string featureName)
         {
