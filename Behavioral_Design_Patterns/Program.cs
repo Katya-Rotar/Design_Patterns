@@ -3,6 +3,11 @@ using Behavioral_Design_Patterns.Pirates.Command_Pattern;
 using Behavioral_Design_Patterns.Pirates.Iterator;
 using Behavioral_Design_Patterns.Pirates.Mediator;
 using Behavioral_Design_Patterns.Pirates.Memento;
+using Behavioral_Design_Patterns.Pirates.Observer;
+using Behavioral_Design_Patterns.Pirates.State;
+using Behavioral_Design_Patterns.Pirates.Strategy;
+using Behavioral_Design_Patterns.Pirates.TemplateMethod;
+using Behavioral_Design_Patterns.Pirates.Visitor;
 
 internal class Program
 {
@@ -119,5 +124,120 @@ internal class Program
         {
             Console.WriteLine(caretaker.GetMemento(i).Location);
         }
+
+        Console.WriteLine("\n-----------------Observer-----------------");
+        // Створюємо спостережувану станцію погоди
+        WeatherStation weatherStation = new WeatherStation();
+
+        // Створюємо спостерігача
+        PirateObserver pirateObserver1 = new PirateObserver();
+        // Підписуємо спостерігача на спостереження за погодою
+        weatherStation.RegisterObserver(pirateObserver1);
+
+        PirateObserver pirateObserver2 = new PirateObserver();
+        weatherStation.RegisterObserver(pirateObserver2);
+
+        WeatherData updatedWeatherData = new WeatherData
+        {
+            Temperature = 25.0f,
+            WindDirection = "East",
+            Precipitation = "Sunny",
+            Cloudiness = 0.3f
+        };
+
+        // Встановлюємо нові дані про погоду на спостережуваній станції
+        weatherStation.SetMeasurements(updatedWeatherData);
+
+        // Видаляємо першого піратського спостерігача зі списку спостережувачів
+        weatherStation.RemoveObserver(pirateObserver1);
+
+        WeatherData anotherWeatherData = new WeatherData
+        {
+            Temperature = 20.0f,
+            WindDirection = "South",
+            Precipitation = "Rainy",
+            Cloudiness = 0.9f
+        };
+        weatherStation.SetMeasurements(anotherWeatherData);
+
+        Console.WriteLine("\n-----------------State-----------------");
+        // Створення корабля
+        Ship ship = new Ship();
+        
+        // Перевірка стану корабля під час плавання
+        Console.WriteLine("Ship is in Floating state:");
+        ship.Move();
+        ship.Attack();
+        ship.Repair();
+        ship.UnloadCargo();
+
+        ship.SetState(new BattleState()); // Зміна стану на бойовий
+
+        // Перевірка стану корабля під час бою
+        Console.WriteLine("\nShip is in Battle state:");
+        ship.Move();
+        ship.Attack();
+        ship.Repair();
+        ship.UnloadCargo();
+
+        ship.SetState(new MooredState()); // Зміна стану на причалений
+
+        // Перевірка стану корабля під час причалення
+        Console.WriteLine("\nShip is in Moored state:");
+        ship.Move();
+        ship.Attack();
+        ship.Repair();
+        ship.UnloadCargo();
+
+        ship.SetState(new UnderRepairState()); // Зміна стану на стан ремонту
+
+        // Перевірка стану корабля під час ремонту
+        Console.WriteLine("\nShip is in Under Repair state:");
+        ship.Move();
+        ship.Attack();
+        ship.Repair();
+        ship.UnloadCargo();
+
+        Console.WriteLine("\n-----------------Strategy-----------------");
+        PirateCaptain pirateCaptain = new PirateCaptain();
+
+        pirateCaptain.SetCombatStrategy(new HitAndRunStrategy());
+        pirateCaptain.ExecuteCombatStrategy();
+
+        pirateCaptain.SetCombatStrategy(new MassiveAttackStrategy());
+        pirateCaptain.ExecuteCombatStrategy();
+
+        pirateCaptain.SetCombatStrategy(new StealthStrategy());
+        pirateCaptain.ExecuteCombatStrategy();
+
+        Console.WriteLine("\n-----------------Template Method-----------------");
+        Console.WriteLine("\nBuilding a Brig:");
+        ShipBuilder brigBuilder = new BrigBuilder();
+        brigBuilder.BuildShip();
+
+        Console.WriteLine("\nBuilding a Frigate:");
+        ShipBuilder frigateBuilder = new FrigateBuilder();
+        frigateBuilder.BuildShip();
+
+        Console.WriteLine("\nBuilding a Galleon:");
+        ShipBuilder galleonBuilder = new GalleonBuilder();
+        galleonBuilder.BuildShip();
+
+        Console.WriteLine("\n-----------------Visitor-----------------");
+        // Створення елементів інвентаря з різними даними
+        Weapon sword = new Weapon(new List<string> { "Cutlass", "Saber", "Pistol" });
+        Food food = new Food(new List<string> { "Salted fish", "Dried meat", "Biscuits" });
+        Drink drink = new Drink(new List<string> { "Rum", "Brandy", "Wine" });
+        Treasure treasure = new Treasure(new List<string> { "Gold coins", "Silver coins", "Jewelry", "Gemstones" });
+
+        // Створення екземпляра відвідувача
+        InventoryPrinter inventoryPrinter = new InventoryPrinter();
+
+
+        // Виклик методу Accept для кожного елементу інвентаря
+        sword.Accept(inventoryPrinter);
+        food.Accept(inventoryPrinter);
+        drink.Accept(inventoryPrinter);
+        treasure.Accept(inventoryPrinter);
     }
 }
